@@ -1,0 +1,28 @@
+[project]
+name = "VoteApp"
+version = "0.0.0"
+description = "Simple app to vote"
+authors = [
+    {name = "Dhaboav", email = "100108392+Dhaboav@users.noreply.github.com"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi[standard] (==0.115.12)",
+    "sqlmodel (==0.0.24)",
+    "passlib[bcrypt] (==1.7.4)",
+]
+
+[tool.poetry]
+packages = [{include = "app"}]
+
+[tool.poetry.group.dev.dependencies]
+isort = "6.0.0"
+black = "25.1.0"
+
+[tool.poetry.scripts]
+start = "app.main:run"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
