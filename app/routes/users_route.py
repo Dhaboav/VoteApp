@@ -8,14 +8,17 @@ Features:
 
 Endpoints:
 - POST /users/          : Register a new user account.
-- GET /users/           : Retrieve all users.
+- POST /users/login     : Log in a user and return an access token.
 - GET /users/{username} : Retrieve a user by username.
 """
 
-from fastapi import APIRouter, HTTPException
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.security import OAuth2PasswordRequestForm
 
 from app.databases import SessionDep
-from app.schemas import Feedback, UserCreate, UserInfo
+from app.schemas import Feedback, TokenSchema, UserCreate, UserInfo
 from app.services import UserService
 
 router = APIRouter(tags=["Users"])
@@ -45,21 +48,28 @@ def register_user(session: SessionDep, user_data: UserCreate):
     )
 
 
-# GET -------------------------------------------------------------------------
-@router.get("/users/", summary="get all users")
-def get_all_users(session: SessionDep):
+@router.post("/users/login", response_model=TokenSchema, summary="login user")
+def login_user(
+    session: SessionDep, user_data: Annotated[OAuth2PasswordRequestForm, Depends()]
+):
     """
-    Endpoint to retrieve all users.
+    Endpoint to log in a user and return an access token.
 
     Args:
         session (SessionDep): Database session dependency.
+        user_data (OAuth2PasswordRequestForm): User data for login.
 
-    Returns:
-        List of all users.
+    Raises:
+        HTTPException: HTTP 400 Bad Request if login fails.
     """
-    return UserService.get_all_users(session)
+    token = UserService.login_user(session, user_data)
+    if not token:
+        raise HTTPException(status_code=400, detail="Invalid username or password")
+
+    return TokenSchema(access_token=token, token_type="bearer")
 
 
+# GET -------------------------------------------------------------------------
 @router.get(
     "/users/{username}", response_model=UserInfo, summary="get user by username"
 )
@@ -79,7 +89,6 @@ def get_user_by_username(session: SessionDep, username: str):
         return UserInfo(
             email=user.email,
             username=user.username,
-            fullname=user.fullname,
             created_at=user.created_at,
         )
 

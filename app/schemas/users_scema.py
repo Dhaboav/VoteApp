@@ -14,7 +14,6 @@ class UserBase(BaseModel):
 
     email: EmailStr
     username: str
-    fullname: str
 
 
 class UserCreate(UserBase):

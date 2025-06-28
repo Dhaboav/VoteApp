@@ -5,15 +5,19 @@ Functions:
 - create_user           : Add a new User to the database.
 - get_all_users         : Retrieve all Users from the database.
 - get_user_by_username  : Retrieve a User by username.
+- login_user            : Authenticate a User and return an access token.
 
 Handles SQLAlchemy exceptions with transaction rollback and logs errors.
 """
 
-from typing import List, Optional
+from datetime import timedelta
+from typing import Optional
 
+from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session, select
 
+from app.config import config
 from app.models import Users
 from app.schemas import UserCreate
 from app.utils import AuthUtils
@@ -50,20 +54,6 @@ class UserService:
             return False
 
     @staticmethod
-    def get_all_users(session: Session) -> List[Users]:
-        """
-        Retrieve all users from the database.
-
-        Args:
-            session (Session): Database session for operations.
-
-        Returns:
-            List[Users]: List of all Users entities.
-        """
-        statement = select(Users)
-        return session.exec(statement).all()
-
-    @staticmethod
     def get_user_by_username(session: Session, username: str) -> Optional[Users]:
         """
         Retrieve a user by username from the database.
@@ -78,3 +68,24 @@ class UserService:
         statement = select(Users).where(Users.username == username)
         result = session.exec(statement).first()
         return result if result else None
+
+    @staticmethod
+    def login_user(
+        session: Session, user_data: OAuth2PasswordRequestForm
+    ) -> Optional[str]:
+        """
+        Log in a user and return an access token.
+
+        Args:
+            session (Session): Database session for operations.
+            user_data (OAuth2PasswordRequestForm): User credentials for login.
+
+        Returns:
+            Optional[str]: The access token if login is successful, otherwise None.
+        """
+        user = UserService.get_user_by_username(session, user_data.username)
+        if not user or not AuthUtils.verify_password(user_data.password, user.password):
+            return None
+
+        access_token_expires = timedelta(minutes=config.ACCESS_TOKEN_EXPIRE_MINUTES)
+        return AuthUtils.login_token(user.id, access_token_expires)

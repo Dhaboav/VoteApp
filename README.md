@@ -15,7 +15,8 @@
 
 🧩 **Current Features:**
 
-- Create a member account 
+- Create a member account
+- Auth token JWT 
 - (More features coming soon...)
 
 ### 🛠 Tech Stack
@@ -24,8 +25,8 @@
   
 - [`SQLModel`](https://sqlmodel.tiangolo.com/) – ORM and data modeling library built on SQLAlchemy and Pydantic  
 
-- [`pydantic`](https://pydantic-docs.helpmanual.io/) – data validation  
- 
+- [`pydantic`](https://pydantic-docs.helpmanual.io/) – data validation
+
 - [`black`](https://github.com/psf/black) and [`isort`](https://github.com/PyCQA/isort) – code formatting
 
 ---
@@ -50,6 +51,17 @@
     poetry run start
     ```
 
+3. **Copy environment file:**
+
+    ```bash
+    copy .env.example .env
+    ```
+
+4. **Generate Secret Key:**
+
+    ```bash
+    openssl rand -hex 32
+    ```
 ---
 
 ### License
