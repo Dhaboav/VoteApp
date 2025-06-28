@@ -2,9 +2,9 @@
 Utility functions for password hashing and verification.
 
 Functions:
-- encrypted_password    : Hashes a plain text password.
-- verify_password       : Verifies a plain text password against a hashed password.
-- login_token           : Generates a JWT token for user login with an expiration time.
+- encrypted_password: Hashes a plain text password.
+- verify_password   : Verifies a plain text password against a hashed password.
+- login_token       : Generates a JWT token for user login with an expiration time.
 """
 
 from datetime import datetime, timedelta, timezone
@@ -38,7 +38,7 @@ class AuthUtils:
         Verifies a plain text password against a hashed password.
 
         Args:
-            plain_password (str): The plain text password to verify.
+            plain_password (str) : The plain text password to verify.
             hashed_password (str): The hashed password to compare against.
 
         Returns:

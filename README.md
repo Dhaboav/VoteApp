@@ -15,7 +15,7 @@
 
 🧩 **Current Features:**
 
-- Create a member account
+- Create a member account, and events with 2-4 choice per event
 - Auth token JWT 
 - (More features coming soon...)
 
@@ -25,7 +25,11 @@
   
 - [`SQLModel`](https://sqlmodel.tiangolo.com/) – ORM and data modeling library built on SQLAlchemy and Pydantic  
 
-- [`pydantic`](https://pydantic-docs.helpmanual.io/) – data validation
+- [`pydantic`](https://pydantic-docs.helpmanual.io/) – Data validation and settings management using Python type annotations  
+
+- [`passlib`](https://passlib.readthedocs.io/en/stable/) – Secure password hashing library; using `bcrypt` for robust authentication 
+
+- [`PyJWT`](https://pyjwt.readthedocs.io/en/stable/) – JSON Web Token implementation in Python for secure token-based authentication  
 
 - [`black`](https://github.com/psf/black) and [`isort`](https://github.com/PyCQA/isort) – code formatting
 

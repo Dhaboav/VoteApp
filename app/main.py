@@ -3,7 +3,7 @@ Main application module for the FastAPI RESTful API.
 
 - Sets up the FastAPI app with metadata (title, description, version).
 - Defines the lifespan event handler for app startup/shutdown database connections.
-- Includes API routers for users and health endpoints.
+- Includes API routers for users, event and health endpoints.
 - Configures CORS middleware to allow requests from the frontend host.
 
 This serves as the entry point for running the API server.
@@ -18,7 +18,7 @@ from fastapi.responses import RedirectResponse
 
 from .config import config
 from .databases import close_db, create_all_tables
-from .routes import health_router, users_router
+from .routes import event_router, health_router, users_router
 
 
 @asynccontextmanager
@@ -37,6 +37,7 @@ app = FastAPI(
 
 app.include_router(health_router)
 app.include_router(users_router)
+app.include_router(event_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=config.FRONTEND_HOST,

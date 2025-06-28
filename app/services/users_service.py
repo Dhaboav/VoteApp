@@ -2,10 +2,10 @@
 CRUD operations for Users entities using SQLModel.
 
 Functions:
-- create_user           : Add a new User to the database.
-- get_all_users         : Retrieve all Users from the database.
-- get_user_by_username  : Retrieve a User by username.
-- login_user            : Authenticate a User and return an access token.
+- create_user         : Add a new User to the database.
+- get_user_by_id      : Retrieve a User by id.
+- get_user_by_username: Retrieve a User by username.
+- login_user          : Authenticate a User and return an access token.
 
 Handles SQLAlchemy exceptions with transaction rollback and logs errors.
 """
@@ -52,6 +52,22 @@ class UserService:
         except IntegrityError:
             session.rollback()
             return False
+
+    @staticmethod
+    def get_user_by_id(session: Session, user_id: str) -> Optional[Users]:
+        """
+        Retrieve a user by ID from the database.
+
+        Args:
+            session (Session): Database session for operations.
+            user_id (str): The ID of the user to retrieve.
+
+        Returns:
+            Optional[Users]: The Users entity if found, otherwise None.
+        """
+        statement = select(Users).where(Users.id == user_id)
+        result = session.exec(statement).first()
+        return result if result else None
 
     @staticmethod
     def get_user_by_username(session: Session, username: str) -> Optional[Users]:

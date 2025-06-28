@@ -6,9 +6,9 @@ This module are used for data modeling of Users in the database.
 
 import uuid
 from datetime import datetime
-from typing import Optional
+from typing import List, Optional
 
-from sqlmodel import Field, SQLModel, func
+from sqlmodel import Field, Relationship, SQLModel, func
 
 
 class Users(SQLModel, table=True):
@@ -16,10 +16,10 @@ class Users(SQLModel, table=True):
     sqlmodel to represent Users entity.
 
     Attributes:
-        id (UUID): The unique identifier for the user.
-        email (str): The email address of the user.
-        username (str): The username of the user.
-        password (str): The password of the user.
+        id (UUID)            : The unique identifier for the user.
+        email (str)          : The email address of the user.
+        username (str)       : The username of the user.
+        password (str)       : The password of the user.
         created_at (datetime): Timestamp of user creation.
     """
 
@@ -30,3 +30,5 @@ class Users(SQLModel, table=True):
     created_at: Optional[datetime] = Field(
         default=None, sa_column_kwargs={"server_default": func.now()}
     )
+
+    events: List["Event"] = Relationship(back_populates="creator")  # type: ignore
