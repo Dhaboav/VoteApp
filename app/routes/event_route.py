@@ -16,7 +16,7 @@ from uuid import UUID
 from fastapi import APIRouter, HTTPException
 
 from app.databases import SessionDep
-from app.schemas import EventCreate, Feedback
+from app.schemas import EventCreate, EventInfo, Feedback
 from app.services import EventService
 
 from .deps import CurrentUserDep
@@ -67,7 +67,7 @@ def user_votes(session: SessionDep, user: CurrentUserDep, event_id: str, choice:
     Args:
         session (SessionDep): Database session dependency.
         user (CurrentDep)   : The currently authenticated user from the JWT token.
-        events (str)        : UUID of the event (as a string path parameter).
+        event_id (str)      : UUID of the event (as a string path parameter).
         choice (str)        : The choice text selected by the user.
 
     Raises HTTPException:
@@ -97,3 +97,35 @@ def user_votes(session: SessionDep, user: CurrentUserDep, event_id: str, choice:
 
     status_code = error_status_map.get(message, 400)
     raise HTTPException(status_code=status_code, detail=message)
+
+
+# GET -------------------------------------------------------------------------
+@router.get(
+    "/event/{event_id}",
+    response_model=EventInfo,
+    summary="retrieve event info",
+    description="Allows user to get event information based on given UUID.",
+)
+def get_event(session: SessionDep, event_id: str):
+    """
+    Endpoint to retrieve event info.
+
+    Args:
+        session (SessionDep): Database session dependency.
+        event_id (str)      : UUID of the event (as a string path parameter).
+
+    Raises
+        HTTPException: 404 Not Found If the event is not found.
+    """
+    try:
+        event_id = UUID(event_id)
+    except ValueError:
+        raise HTTPException(status_code=422, detail="Invalid event UUID")
+
+    result = EventService.get_event_by_id(session, event_id)
+    if result:
+        return EventInfo(
+            title=result.title, desc=result.desc, expires_at=result.expires_at
+        )
+
+    raise HTTPException(status_code=404, detail="Event not found.")

@@ -108,6 +108,20 @@ class EventService:
             session.rollback()
             return False, "Something wrong."
 
+    def get_event_by_id(session: Session, event_id: UUID) -> Optional[Event]:
+        """
+        Retrieve event information based on event_id from database.
+
+        Args:
+            session (Session)  : Database session for operations.
+            event_id (UUID)    : ID of the event.
+
+        Returns:
+            Optional[Event]: The Event entity if found, otherwise None.
+        """
+        statment = select(Event).where(Event.id == event_id)
+        return session.exec(statment).first()
+
     # UTILS -------------------------------------------------------------------------
     @staticmethod
     def verify_choice(

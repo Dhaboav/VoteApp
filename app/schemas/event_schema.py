@@ -23,3 +23,11 @@ class EventCreate(BaseModel):
     description: Optional[str] = None
     choices: List[ChoiceSchema]
     expires_at: Optional[datetime] = None
+
+
+class EventInfo(BaseModel):
+    """Pydantic schema for public Event."""
+
+    title: str
+    desc: str
+    expires_at: Optional[datetime]

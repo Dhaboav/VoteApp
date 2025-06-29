@@ -1,5 +1,5 @@
 from .auth_schema import TokenPayload, TokenSchema
-from .event_schema import EventCreate
+from .event_schema import EventCreate, EventInfo
 from .feedback_schema import Feedback
 from .users_scema import UserCreate
 
@@ -9,4 +9,5 @@ __all__ = [
     "TokenSchema",
     "TokenPayload",
     "EventCreate",
+    "EventInfo",
 ]
