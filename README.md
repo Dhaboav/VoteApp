@@ -1,39 +1,37 @@
 <br />
 <div align="center">
-<h3 align="center">📊 VoteApp</h3>
+  <h3 align="center">📊 VoteApp</h3>
 
   <p align="center">
-     A simple and minimal voting application built with Python.
+    A simple and minimal voting application built with Python and FastAPI.
   </p>
 </div>
 
 ---
 
-### 🚀 Overview
+## 🚀 Overview
 
-**VoteApp** is a lightweight application designed to handle basic voting functionalities.
+**VoteApp** is a lightweight application designed to handle basic voting functionalities. It offers a clean and simple interface for creating voting events and allowing users to vote securely using event IDs.
 
-🧩 **Current Features:**
+### 🔑 Current Features
 
-- Create a member account, and events with 2-4 choice per event
-- Auth token JWT 
-- (More features coming soon...)
-
-### 🛠 Tech Stack
-
-- [`FastAPI`](https://fastapi.tiangolo.com/) – high-performance web framework for APIs
-  
-- [`SQLModel`](https://sqlmodel.tiangolo.com/) – ORM and data modeling library built on SQLAlchemy and Pydantic  
-
-- [`pydantic`](https://pydantic-docs.helpmanual.io/) – Data validation and settings management using Python type annotations  
-
-- [`passlib`](https://passlib.readthedocs.io/en/stable/) – Secure password hashing library; using `bcrypt` for robust authentication 
-
-- [`PyJWT`](https://pyjwt.readthedocs.io/en/stable/) – JSON Web Token implementation in Python for secure token-based authentication  
-
-- [`black`](https://github.com/psf/black) and [`isort`](https://github.com/PyCQA/isort) – code formatting
+- 🔐 User registration and authentication with JWT
+- 🗳️ Create and manage voting events
+- ✅ Vote by event ID
+- 📈 Minimal and efficient API endpoints
+- 🧩 More features coming soon...
 
 ---
+
+## 🛠 Tech Stack
+
+- [`FastAPI`](https://fastapi.tiangolo.com/) – High-performance web framework for building APIs
+- [`SQLModel`](https://sqlmodel.tiangolo.com/) – ORM and data modeling (built on SQLAlchemy + Pydantic)
+- [`pydantic`](https://pydantic-docs.helpmanual.io/) – Data validation using Python type hints
+- [`passlib`](https://passlib.readthedocs.io/en/stable/) – Secure password hashing (using `bcrypt`)
+- [`PyJWT`](https://pyjwt.readthedocs.io/en/stable/) – JSON Web Token implementation for auth
+- [`black`](https://github.com/psf/black) & [`isort`](https://github.com/PyCQA/isort) – Code formatting tools
+
 
 ### 📦 Installation
 
