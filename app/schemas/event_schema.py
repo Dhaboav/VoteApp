@@ -4,6 +4,7 @@ Pydantic model for the Event database table.
 Used for database CRUD operations in the application.
 """
 
+from datetime import datetime
 from typing import List, Optional
 
 from pydantic import BaseModel
@@ -21,3 +22,4 @@ class EventCreate(BaseModel):
     name: str
     description: Optional[str] = None
     choices: List[ChoiceSchema]
+    expires_at: Optional[datetime] = None

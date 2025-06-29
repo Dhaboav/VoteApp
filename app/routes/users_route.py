@@ -25,7 +25,11 @@ router = APIRouter(tags=["Users"])
 
 # POST -------------------------------------------------------------------------
 @router.post(
-    "/users/", status_code=201, response_model=Feedback, summary="creates a new User"
+    "/users/",
+    status_code=201,
+    response_model=Feedback,
+    summary="creates a new User",
+    description="Allows user to create an account to access the service",
 )
 def register_user(session: SessionDep, user_data: UserCreate):
     """
@@ -47,7 +51,12 @@ def register_user(session: SessionDep, user_data: UserCreate):
     )
 
 
-@router.post("/users/login", response_model=TokenSchema, summary="login user")
+@router.post(
+    "/users/login",
+    response_model=TokenSchema,
+    summary="login user",
+    description="Allows an user to login and get jwt token in return",
+)
 def login_user(
     session: SessionDep, user_data: Annotated[OAuth2PasswordRequestForm, Depends()]
 ):

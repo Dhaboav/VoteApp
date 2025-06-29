@@ -3,9 +3,9 @@ CRUD operations for Users entities using SQLModel.
 
 Functions:
 - create_user         : Add a new User to the database.
+- login_user          : Authenticate a User and return an access token.
 - get_user_by_id      : Retrieve a User by id.
 - get_user_by_username: Retrieve a User by username.
-- login_user          : Authenticate a User and return an access token.
 
 Handles SQLAlchemy exceptions with transaction rollback and logs errors.
 """
@@ -54,38 +54,6 @@ class UserService:
             return False
 
     @staticmethod
-    def get_user_by_id(session: Session, user_id: str) -> Optional[Users]:
-        """
-        Retrieve a user by ID from the database.
-
-        Args:
-            session (Session): Database session for operations.
-            user_id (str): The ID of the user to retrieve.
-
-        Returns:
-            Optional[Users]: The Users entity if found, otherwise None.
-        """
-        statement = select(Users).where(Users.id == user_id)
-        result = session.exec(statement).first()
-        return result if result else None
-
-    @staticmethod
-    def get_user_by_username(session: Session, username: str) -> Optional[Users]:
-        """
-        Retrieve a user by username from the database.
-
-        Args:
-            session (Session): Database session for operations.
-            username (str): The username of the user to retrieve.
-
-        Returns:
-            Optional[Users]: The Users entity if found, otherwise None.
-        """
-        statement = select(Users).where(Users.username == username)
-        result = session.exec(statement).first()
-        return result if result else None
-
-    @staticmethod
     def login_user(
         session: Session, user_data: OAuth2PasswordRequestForm
     ) -> Optional[str]:
@@ -105,3 +73,34 @@ class UserService:
 
         access_token_expires = timedelta(minutes=config.ACCESS_TOKEN_EXPIRE_MINUTES)
         return AuthUtils.login_token(user.id, access_token_expires)
+
+    # UTILS -------------------------------------------------------------------------
+    @staticmethod
+    def get_user_by_id(session: Session, user_id: str) -> Optional[Users]:
+        """
+        Retrieve a user by ID from the database.
+
+        Args:
+            session (Session): Database session for operations.
+            user_id (str): The ID of the user to retrieve.
+
+        Returns:
+            Optional[Users]: The Users entity if found, otherwise None.
+        """
+        statement = select(Users).where(Users.id == user_id)
+        return session.exec(statement).first()
+
+    @staticmethod
+    def get_user_by_username(session: Session, username: str) -> Optional[Users]:
+        """
+        Retrieve a user by username from the database.
+
+        Args:
+            session (Session): Database session for operations.
+            username (str): The username of the user to retrieve.
+
+        Returns:
+            Optional[Users]: The Users entity if found, otherwise None.
+        """
+        statement = select(Users).where(Users.username == username)
+        return session.exec(statement).first()

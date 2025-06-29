@@ -21,6 +21,10 @@ class Users(SQLModel, table=True):
         username (str)       : The username of the user.
         password (str)       : The password of the user.
         created_at (datetime): Timestamp of user creation.
+
+    Relationships:
+        event (List[Event]): The event to which this choice belongs.
+        votes (List[Vote]) : A list of vote associated with the event and user.
     """
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
@@ -32,3 +36,4 @@ class Users(SQLModel, table=True):
     )
 
     events: List["Event"] = Relationship(back_populates="creator")  # type: ignore
+    votes: List["Vote"] = Relationship(back_populates="user")  # type: ignore
